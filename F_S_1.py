@@ -1,4 +1,4 @@
-"""import copy
+import copy
 import sys, os, io
 from collections import *
 from bisect import *
@@ -19,10 +19,61 @@ mod = int(1e9) + 7
 inf = float("inf")
 # print(os.path.dirname(os.path.abspath(__file__)))
 # input_file_path = os.path.dirname(os.path.abspath(__file__))
-if os.path.exists("input.txt"):
-    sys.stdin = open("input.txt", "r")
-    sys.stdout = open("output.txt", "w")
+local_ = False
+from io import BytesIO, IOBase
+BUFSIZE = 4096
+class FastIO(IOBase):
+    newlines = 0
 
+    def __init__(self, file):
+        self._fd = file.fileno()
+        self.buffer = BytesIO()
+        self.writable = "x" in file.mode or "r" not in file.mode
+        self.write = self.buffer.write if self.writable else None
+
+    def read(self):
+        while True:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            if not b:
+                break
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines = 0
+        return self.buffer.read()
+
+    def readline(self):
+        while self.newlines == 0:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            self.newlines = b.count(b"\n") + (not b)
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines -= 1
+        return self.buffer.readline()
+
+    def flush(self):
+        if self.writable:
+            os.write(self._fd, self.buffer.getvalue())
+            self.buffer.truncate(0), self.buffer.seek(0)
+
+class IOWrapper(IOBase):
+    def __init__(self, file):
+        self.buffer = FastIO(file)
+        self.flush = self.buffer.flush
+        self.writable = self.buffer.writable
+        self.write = lambda s: self.buffer.write(s.encode("ascii"))
+        self.read = lambda: self.buffer.read().decode("ascii")
+        self.readline = lambda: self.buffer.readline().decode("ascii")
+
+sys.stdout = IOWrapper(sys.stdout)
+file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
+if os.path.exists(file_path): #os.path.exists('in.txt'):
+    local_ = True
+if os.path.exists("in.txt"):
+    sys.stdin = open("in.txt", "r")
+    sys.stdout = open("out.txt", "w")
+
+#input = sys.stdin.buffer.readline
+#print = sys.stdout.write
 
 def lst():
     return list(map(int, input().strip().split()))
@@ -42,7 +93,7 @@ def matrixNum(m):
     return [lst() for i in range(m)]
 
 def matrixStr(m):
-    return [st() for i in range(m)]
+    return [list(st()) for i in range(m)]
 
 class DSU:
     def __init__(self, n) -> None:
@@ -96,7 +147,7 @@ for i in range(len(_prime)):
 
 def djisktra(src,d):
     a = []
-    vis = set()
+    # vis = set()
     heappush(a,[0,src])
     p = defaultdict(lambda :inf)
     p[src] = 0
@@ -104,9 +155,9 @@ def djisktra(src,d):
     while a:
         # print(a)
         _, node = heappop(a)
-        if node in vis:
-            continue
-        vis.add(node)
+        # if node in vis:
+        #     continue
+        # vis.add(node)
         for j,weight in d[node]:
             if p[node]+weight<p[j]:
                 p[j] = p[node]+weight
@@ -133,55 +184,45 @@ def hh():
     a = [integer() for i in range(n[0])]
     return *n,a
 
+if local_:
+    def cout(*args):
+        print(*args)
+
+else:
+    def cout(*args):
+        return 135
+
+def ext_gcd(a, b):
+    """
+    return (x, y, gcd(a, b)) s.t. ax + by = gcd(a, b)
+    """
+    if b == 0:
+        return 1, 0, a
+    else:
+        y, x, g = ext_gcd(b, a % b)
+        return x, y - (a // b) * x, g
+
 def solve():
-    # print(str.rjust(20, "O")
-    # m = str(m).rjust(2,'0')
    
-    mini = inf
-    maxi = -inf
+    a,b = lst()
+    x,y,g = ext_gcd(a,-b)
+    if abs(g)>2:
+        gh(-1)
+        return
+    if abs(g)==2:
+        gh([y,x])
+        return
+    x*=2
+    y*=2
+    gh([y,x])
+    # cout(x,y,g)
     
-    x,n = lst()
     
 
 
 t = 1
 
-# t = integer()
-
 for _ in range(t):
     solve()
 
 print("\n".join(map(str, ans)))
-
-#convert to c++"""
-
-import requests
-import pandas as pd
-import datetime
-url = "https://codeforces.com/api/user.status?handle=killua123"
-res = requests.get(url)
-obj = res.json()['result']
-problems = []
-# print(obj)
-for i in obj:
-    if i['id']<245555118:
-        break
-    problem = i['problem']
-    contestId = problem['contestId']
-    index = problem['index']
-    name = problem['name']
-    if 'rating' in problem:
-        rating = problem['rating']
-    else:
-        rating = None
-    participantType = i['author']['participantType']
-    creationTimeSeconds = i['creationTimeSeconds']
-    creationTimeSeconds = datetime.datetime.fromtimestamp(creationTimeSeconds).strftime("%d-%m-%Y")
-    x = [contestId,name,rating,participantType,creationTimeSeconds,index,i['verdict']]
-    problems.append(x)
-
-header = ['contestId','name','rating','participantType','when','index','verdict']
-df = pd.DataFrame(problems,columns=header)
-df.to_csv('solved.csv',index=False,header=False)
-
-

@@ -1,5 +1,6 @@
-"""import copy
-import sys, os, io
+import os,io,sys
+
+
 from collections import *
 from bisect import *
 
@@ -7,7 +8,7 @@ import math
 from math import sqrt
 from heapq import heapify, heappop, heappush
 
-#from functools import  cache
+from functools import cache
 
 from itertools import accumulate, product, combinations, combinations_with_replacement, permutations, groupby, cycle
 from bisect import bisect_left, bisect_right
@@ -19,13 +20,63 @@ mod = int(1e9) + 7
 inf = float("inf")
 # print(os.path.dirname(os.path.abspath(__file__)))
 # input_file_path = os.path.dirname(os.path.abspath(__file__))
-if os.path.exists("input.txt"):
-    sys.stdin = open("input.txt", "r")
-    sys.stdout = open("output.txt", "w")
+local_ = False
+from io import BytesIO, IOBase
+BUFSIZE = 4096
+class FastIO(IOBase):
+    newlines = 0
+
+    def __init__(self, file):
+        self._fd = file.fileno()
+        self.buffer = BytesIO()
+        self.writable = "x" in file.mode or "r" not in file.mode
+        self.write = self.buffer.write if self.writable else None
+
+    def read(self):
+        while True:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            if not b:
+                break
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines = 0
+        return self.buffer.read()
+
+    def readline(self):
+        while self.newlines == 0:
+            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
+            self.newlines = b.count(b"\n") + (not b)
+            ptr = self.buffer.tell()
+            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
+        self.newlines -= 1
+        return self.buffer.readline()
+
+    def flush(self):
+        if self.writable:
+            os.write(self._fd, self.buffer.getvalue())
+            self.buffer.truncate(0), self.buffer.seek(0)
+
+class IOWrapper(IOBase):
+    def __init__(self, file):
+        self.buffer = FastIO(file)
+        self.flush = self.buffer.flush
+        self.writable = self.buffer.writable
+        self.write = lambda s: self.buffer.write(s.encode("ascii"))
+        self.read = lambda: self.buffer.read().decode("ascii")
+        self.readline = lambda: self.buffer.readline().decode("ascii")
+
+sys.stdout = IOWrapper(sys.stdout)
+file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
+if os.path.exists(file_path): #os.path.exists('in.txt'):
+    local_ = True
+if os.path.exists("in.txt"):
+    sys.stdin = open("in.txt", "r")
+    sys.stdout = open("out.txt", "w")
+
+#input = sys.stdin.buffer.readline
+#print = sys.stdout.write
 
 
-def lst():
-    return list(map(int, input().strip().split()))
 
 
 def integer():
@@ -38,11 +89,16 @@ def st():
     return input()
 
 
+def lst():
+    return list(map(int, input().strip().split()))
+
 def matrixNum(m):
     return [lst() for i in range(m)]
 
+
+
 def matrixStr(m):
-    return [st() for i in range(m)]
+    return [list(st()) for i in range(m)]
 
 class DSU:
     def __init__(self, n) -> None:
@@ -121,7 +177,7 @@ ans = []
 
 dir = [[0,1],[1,0],[0,-1],[-1,0],[1,-1],[-1,1],[1,1],[-1,-1]]
 # dir = [[-1,-1],[-1,1],[1,1],[1,-1]]
-# dir = {'U':[0,1],'R':[1,0],'D':[0,-1],'L':[-1,0]}
+# dir = {'U':[-1,0],'R':[0,1],'D':[1,0],'L':[0,-1]}
 # dir = dir.values()
 def h():
     n = lst()
@@ -133,55 +189,49 @@ def hh():
     a = [integer() for i in range(n[0])]
     return *n,a
 
+if local_:
+    def cout(*args):
+        print('==========',*args)
+
+else:
+    def cout(*args):
+        return 135
+
 def solve():
     # print(str.rjust(20, "O")
     # m = str(m).rjust(2,'0')
    
     mini = inf
     maxi = -inf
-    
-    x,n = lst()
+    n = integer()
+    def lst():
+        return list(map(float, input().strip().split()))
+    a = lst()
+
+    def h(i=n-1,cnt=0):
+        if i<0:
+            return 1
+        
+        if i+1<=cnt:
+            return 0
+        x = h(i-1,cnt)*a[i]
+        y = h(i-1,cnt+1)*(1-a[i])
+        return x+y
+    x = h()
+    cout(x)
+        
+
     
 
 
 t = 1
 
-# t = integer()
+#t = integer()
 
 for _ in range(t):
+    cout('testcase:',1+_)
     solve()
 
 print("\n".join(map(str, ans)))
 
-#convert to c++"""
-
-import requests
-import pandas as pd
-import datetime
-url = "https://codeforces.com/api/user.status?handle=killua123"
-res = requests.get(url)
-obj = res.json()['result']
-problems = []
-# print(obj)
-for i in obj:
-    if i['id']<245555118:
-        break
-    problem = i['problem']
-    contestId = problem['contestId']
-    index = problem['index']
-    name = problem['name']
-    if 'rating' in problem:
-        rating = problem['rating']
-    else:
-        rating = None
-    participantType = i['author']['participantType']
-    creationTimeSeconds = i['creationTimeSeconds']
-    creationTimeSeconds = datetime.datetime.fromtimestamp(creationTimeSeconds).strftime("%d-%m-%Y")
-    x = [contestId,name,rating,participantType,creationTimeSeconds,index,i['verdict']]
-    problems.append(x)
-
-header = ['contestId','name','rating','participantType','when','index','verdict']
-df = pd.DataFrame(problems,columns=header)
-df.to_csv('solved.csv',index=False,header=False)
-
-
+#convert to c++

@@ -17,18 +17,10 @@ from string import ascii_lowercase,ascii_uppercase
 
 mod = int(1e9) + 7
 inf = float("inf")
-# print(os.path.dirname(os.path.abspath(__file__)))
-# input_file_path = os.path.dirname(os.path.abspath(__file__))
-local_ = False
-file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
-if os.path.exists(file_path): #os.path.exists('in.txt'):
-    local_ = True
-if os.path.exists("in.txt"):
-    sys.stdin = open("in.txt", "r")
-    sys.stdout = open("out.txt", "w")
 
-#input = sys.stdin.buffer.readline
-#print = sys.stdout.write
+local_ = False
+
+
 
 def lst():
     return list(map(int, input().strip().split()))
@@ -50,85 +42,18 @@ def matrixNum(m):
 def matrixStr(m):
     return [list(st()) for i in range(m)]
 
-class DSU:
-    def __init__(self, n) -> None:
-        self.rank = [0] * (n + 1)
-        self.parent = [0] * (n + 1)
-
-        for i in range(n + 1):
-            self.parent[i] = i
-
-    def find(self, x) -> int:
-        if self.parent[x] == x:
-            return x
-        return self.find(self.parent[x])
-
-    def union(self, a, b) -> int:
-        x = self.find(a)
-        y = self.find(b)
-
-        if x == y:
-            return 1
-
-        if self.rank[x] < self.rank[y]:
-            self.parent[x] = y
-
-        elif self.rank[x] > self.rank[y]:
-            self.parent[y] = x
-
-        else:
-            self.parent[y] = x
-            self.rank[x] += 1
-
-        return 0
 
 def gh(out,s=' '):
     if isinstance(out, list):
         out = s.join(map(str, out))
     ans.append(out)
 
-m = 1e1
-_prime = [i for i in range(int(m+100))]
-_prime[0] = _prime[1] = -1
-for i in range(2,1+int(sqrt(len(_prime)))):
-    if _prime[i] ==i:
-        for j in range(i*i,len(_prime),i):
-            _prime[j] = i
-
-s = set()
-for i in range(len(_prime)):
-    if _prime[i]==i:
-        s.add(i)
-
-def djisktra(src,d):
-    a = []
-    vis = set()
-    heappush(a,[0,src])
-    p = defaultdict(lambda :inf)
-    p[src] = 0
-
-    while a:
-        # print(a)
-        _, node = heappop(a)
-        if node in vis:
-            continue
-        vis.add(node)
-        for j,weight in d[node]:
-            if p[node]+weight<p[j]:
-                p[j] = p[node]+weight
-                heappush(a,[p[j],j])
-
-    return p
 
 yes, no = "Yes", "No"
 
 ans = []
 
 
-dir = [[0,1],[1,0],[0,-1],[-1,0],[1,-1],[-1,1],[1,1],[-1,-1]]
-# dir = [[-1,-1],[-1,1],[1,1],[1,-1]]
-# dir = {'U':[0,1],'R':[1,0],'D':[0,-1],'L':[-1,0]}
-# dir = dir.values()
 def h():
     n = lst()
     a = lst()
@@ -146,6 +71,7 @@ if local_:
 else:
     def cout(*args):
         return 135
+    
 
 from typing import List, Iterable, Sequence, Union
 
@@ -214,74 +140,38 @@ class FenwickTreeRAQ():
     return f'FenwickTreeRAQ({self})'
 
 
+
 def solve():
     # print(str.rjust(20, "O")
     # m = str(m).rjust(2,'0')
    
     mini = inf
     maxi = -inf
-    n,m = lst()
+
+    n,q = lst()
     a = lst()
-    b = lst()
-
     fw = FenwickTreeRAQ(a)
-    for i in b:
-       val = fw.__getitem__(i)
-    #    cout(val)
-       fw.add(i,-val)
-       fw.add_range(0,n,val//n)
-       rem = val%n
-    #    cout(rem)
-       mini = min(rem,n-(i+1))
-    #    cout(i+1,i+mini+1)
-    #    cout()
-       fw.add_range(i+1,i+mini+1,1)
-       rem -= mini
-       fw.add_range(0,rem,1)
-    #    cout(fw.tolist())
-    #    fw.
-
-    x = fw.tolist()
-    gh(x)
-    # dif = [a[0]]
-    # for i in range(1,n):
-    #     dif.append(a[i]-a[i-1])
-    # dif.append(0)
-    # for i in b:
-    #     if i==0:
-    #         val = dif[0]
-    #     else:
-    #         val = dif[0]
-    #         for j in range(1,i+1):
-    #             val += dif[j]
-    #     # cout(dif)
-    #     full = val//n
-    #     dif[i]+=-val
-    #     dif[i+1]-=-val
-    #     dif[0]+=full
-    #     dif[-1]-=full
-    #     rem = val%n
-    #     x = min(rem,n-(i+1))
-    #     dif[i+1]+=1
-    #     dif[i+x+1]-=1
-    #     rem -= x
-    #     if rem>0:
-    #         dif[0]+=1
-    #         dif[rem]-=1
-    
-    # out = [dif[0]]
-    # for i in range(1,n):
-    #     out.append(out[-1]+dif[i])
-    # gh(out)
-
+    for _ in range(q):
+        x = lst()
+        if x[0]==1:
+            x[1]-=1
+            fw.add_range(x[1],x[2],x[3])
+            # seg.apply(x[1],x[2],x[3])
+        else:
+            # x = seg.get(x[1]-1)
+            x = fw.__getitem__(x[1]-1)
+            gh(x)
+        # a,b = lst()
+        # a-=1
         
+        # x = seg.prod(a,b)
+        # gh(x)
 
     
-
 
 t = 1
 
-#t = integer()
+# t = integer()
 
 for _ in range(t):
     # cout('testcase:',1+_)
