@@ -28,17 +28,14 @@ def solve():
     s = st()
     sp = matrixStr(r)
     def h(i,j):
-        i1,j1 = i,j
+        print(i,j)
         for d in s:
-            # cout('before',i,j)
             i += dir[d][0]
             j += dir[d][1]
-            # cout('after',d,i,j)
             if 0<=i<r and 0<=j<c:
                 if sp[i][j]=='#':return False
             else:
                 return False
-        # cout(i1,j1,sp[i][j]=='.')
         return sp[i][j]=='.' 
     cnt = 0
     for i in range(r):

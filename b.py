@@ -1,8 +1,10 @@
-import random
+import random, time
 import copy
 import sys, os, io
 from collections import *
 from bisect import *
+
+sys.setrecursionlimit(10**8)
 
 import math
 from math import sqrt
@@ -14,10 +16,28 @@ from itertools import accumulate, product, combinations, combinations_with_repla
 from bisect import bisect_left, bisect_right
 from string import ascii_lowercase,ascii_uppercase
 
+def lst():
+    return list(map(int, input().strip().split()))
+
+
+def integer():
+    return int(input())
+
+def ceil(x,y):
+    return int(-(-x  // y))
+
+def st():
+    return input()
+
+
+def matrixNum(m):
+    return [lst() for i in range(m)]
+
+def matrixStr(m):
+    return [st() for i in range(m)]
 
 mod = int(1e9) + 7
 inf = float("inf")
-local_ = False
 
 yes, no = "Yes", "No"
 
@@ -28,121 +48,81 @@ def mystery(l,r):
 def ceil(x,y):
     return int(-(-x  // y))
 
-def solve(n,a):
+def de(*args):
+        return 135
+
+
+def solve(*args):
+    n,a = args[0]
     
-    res = [inf]*n
-    p = [0]*(n+5)
-    for i in range(n):
-        p[i+1] = p[i]+a[i]
+    cnt = 0
+    c = a[-1]
+    fold = 1
+    i = n-2
+    while i>=0:
+        de(i)
+        x = 0
+        f = 0
+        while x<fold and i>=0: 
+            if a[i]!=c:
+                f = 1
+            x+=1
+            i-=1
 
-    cnt = [0]*(n+5)
-    cnt[1] = 1
-    for i in range(1,n):
-        cnt[i+1] = cnt[i] + (1 if a[i-1]!=a[i] else 0)
-
-    for i in range(n):
-        if i-1>=0 and a[i-1]>a[i]:
-            res[i] = 1
-        if i+1<n and a[i+1]>a[i]:
-            res[i] = 1
-        
-        if res[i] ==1:
-            continue
-
-        l,r = 0,i-2
-        prv = inf
-        
-
-        while r-l>-1:
-            m = (l+r)>>1
-            tot = p[i]-p[m]
-            c = cnt[i]-cnt[m]
-            if tot>a[i] and c>1:
-                prv = min(prv,i-m)
-                l = m+1
-            else:
-                r = m-1
-        
-        res[i] = prv
-
-        # cout(res)
-
-        l,r = i+2,n-1
-        prv = inf
-        
-
-        while r-l>-1:
-            m = (l+r)>>1
-            tot = p[m+1]-p[i+1]
-            c = cnt[m+1]-cnt[i+1]
-            # cout(i,l,r,m,tot,c)
-            if tot>a[i] and c>1:
-                prv = min(prv,m+1-(i+1))
-                r = m-1
-            else:
-                l = m+1
-        
-        res[i] = min(res[i],prv)
-    
-    for i in range(len(res)):
-        if res[i]==inf:
-            res[i] = -1
-    return (res)
+        if f:
+            cnt+=1
+        fold*=2
+    return cnt
 
     
 
-def brute(n,a):
-    # n,a = h()
-    res = [inf]*n
-    for i in range(n):
-        tot = 0
-        s = set()
-        for j in range(i+1,n):
-            tot+=a[j]
-            if tot>a[i] and len(s)==0:
-                res[i] = 1
-                break
-            s.add(a[j])
-            if tot>a[i] and len(s)>1:
-                res[i] = (j-i)
-                break
- 
-    for i in range(n):
-        tot = 0
-        s = set()
-        for j in range(i-1,-1,-1):
-            tot+=a[j]
-            if tot>a[i] and len(s)==0:
-                res[i] = min(res[i],1)
-                break
-            s.add(a[j])
-            if tot>a[i] and len(s)>1:
-                res[i] = min(res[i],i-j)
-                break
     
-    for i in range(n):
-        if res[i]==inf:
-            res[i]=-1
-    return (res)
 
-A = mystery(1,100000)
-B = mystery(1,100000)
-n = mystery(1,10000)
-b = [mystery(1,10000) for i in range(n)]
+def brute(*args):
+    n,l = args[0]
+    # a = matrixStr(m)
+    i=n-1
+    x=0
+    c=0
+    while(i>=0):
+        if(l[i]==l[-1]):
+            i-=1
+            x+=1
+        else:
+            c+=1
+            i-=x
+            x*=2
+    return c
 
-n = mystery(1,10)
-a = [mystery(1,30) for i in range(n)]
+start = time.time()
 
-while solve(n,a)==brute(n,a):
-    n = mystery(1,10)
-    a = [mystery(1,30) for i in range(n)]
-    # A = mystery(1,10)
-    # B = mystery(1,10)
-    # n = mystery(1,10)
-    # a = [mystery(1,10) for i in range(n)]
-    # b = [mystery(1,10) for i in range(n)]
-    # n = mystery(0,30)
-    # k = mystery(0,30)
-# print(A,B,n,a,b)
-print(n,a)
-print(solve(n,a),brute(n,a))
+while True:
+
+    try:
+        # A = mystery(1,100000)
+        # B = mystery(1,100000)
+        # n = mystery(1,10000)
+        # b = [mystery(1,10000) for i in range(n)]
+
+        if time.time()-start>=10*3:
+            print("Time 10sec reached")
+            break
+
+        n = mystery(1,6)
+        # m = mystery(1,200)
+        # x = mystery(1,n+1)
+        choic = [' 1',' 0',' ?']
+        # a = [str(mystery(1,n+1))+random.choice(choic) for i in range(m)]
+        a = [mystery(1,n+1) for i in range(n)]
+        t = [n,a]
+        # print(t,solve(t),brute(t))
+        if solve(t)!=brute(t):
+            print(t);print("My Solution:-",solve(t));print("Brute Force Solution:-",brute(t))
+            break
+
+    except Exception as e:
+        print(e)
+        print('caught in except')
+        print(t)
+        break
+

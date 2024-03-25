@@ -160,13 +160,16 @@ def solve():
         l+=1
     even = 1+(r-l)//2
     odd = tot -even
-    cout(even,odd)
+    # cout(even,odd,l,r,tot)
     if k>=odd:
         gh(yes.upper())
     elif odd==1 and even==0 and r!=1:
         gh(yes.upper())
     else:
         gh(no.upper())
+    for i in range(3000):
+        pass
+            
 
 
 t = 1
@@ -179,4 +182,4 @@ for _ in range(t):
 
 print("\n".join(map(str, ans)))
 
-#convert to c++
+#convert to

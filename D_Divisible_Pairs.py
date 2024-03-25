@@ -7,7 +7,7 @@ import math
 from math import sqrt
 from heapq import heapify, heappop, heappush
 
-#from functools import  cache
+#from functools import cache
 
 from itertools import accumulate, product, combinations, combinations_with_replacement, permutations, groupby, cycle
 from bisect import bisect_left, bisect_right
@@ -66,7 +66,8 @@ class IOWrapper(IOBase):
 
 sys.stdout = IOWrapper(sys.stdout)
 file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
-if os.path.exists(file_path): #os.path.exists('in.txt'):
+# if os.path.exists(file_path): #os.path.exists('in.txt'):
+if os.path.exists("C://Users//mridu//Python_Code//CPPython//in.txt"): #os.path.exists('in.txt'):
     local_ = True
 if os.path.exists("in.txt"):
     sys.stdin = open("in.txt", "r")
@@ -130,7 +131,8 @@ class DSU:
 def gh(out,s=' '):
     if isinstance(out, list):
         out = s.join(map(str, out))
-    ans.append(out)
+    print(out)
+    # ans.append(out)
 
 m = 1e1
 _prime = [i for i in range(int(m+100))]
@@ -167,12 +169,12 @@ def djisktra(src,d):
 
 yes, no = "Yes", "No"
 
-ans = []
+# ans = []
 
 
 dir = [[0,1],[1,0],[0,-1],[-1,0],[1,-1],[-1,1],[1,1],[-1,-1]]
 # dir = [[-1,-1],[-1,1],[1,1],[1,-1]]
-# dir = {'U':[0,1],'R':[1,0],'D':[0,-1],'L':[-1,0]}
+# dir = {'U':[-1,0],'R':[0,1],'D':[1,0],'L':[0,-1]}
 # dir = dir.values()
 def h():
     n = lst()
@@ -185,27 +187,33 @@ def hh():
     return *n,a
 
 if local_:
-    def cout(*args):
-        print(*args)
+    def de(*args):
+        e = ' '.join(map(str,args))
+        sys.stderr.write(e+'\n')
+        # print('==========',*args)
 
 else:
-    def cout(*args):
+    def de(*args):
         return 135
 
 def solve():
     # print(str.rjust(20, "O")
-    # m = str(m).rjust(2,'0')
+    # m = str(m).rjust(2,'0')   
    
     mini = inf
     maxi = -inf
     n,x,y = lst()
     a = lst()
-    a.sort()
-    cout(x,y)
-    cout(a)
-    dp = [0]*(n+1)
-    # for i in range(n-1,-1,-1):
-    #     for j in range()
+    d = defaultdict(int)
+    tot = 0
+    for i,v in enumerate(a):
+        f,s = (x-v%x)%x,v%y
+        tot += d[(f,s)]
+        d[(v%x,v%y)]+=1
+    gh(tot)
+
+
+    
 
 
 t = 1
@@ -213,9 +221,8 @@ t = 1
 t = integer()
 
 for _ in range(t):
-    cout('testcase:',1+_)
+    de('testcase:',1+_)
     solve()
 
-print("\n".join(map(str, ans)))
+# print("\n".join(map(str, ans)))
 
-#convert to c++

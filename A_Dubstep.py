@@ -201,20 +201,22 @@ def solve():
     mini = inf
     maxi = -inf
     s = st()
-    res = ""
-    i = 0
-    while i<len(s):
-        if s[i:i+3]=="WUB":
-            res+=" "
-            i+=3
-            continue
-        res +=  s[i]
-        i+=1
-    res = res.split()
-    res = " ".join(res)
-    d = Counter(s)
-    cout(res,"hello",d,33)
-    gh(res)
+    s = s.replace("WUB",' ').strip().split()
+    gh(' '.join(s))
+    # res = ""
+    # i = 0
+    # while i<len(s):
+    #     if s[i:i+3]=="WUB":
+    #         res+=" "
+    #         i+=3
+    #         continue
+    #     res +=  s[i]
+    #     i+=1
+    # res = res.split()
+    # res = " ".join(res)
+    # d = Counter(s)
+    # cout(res,"hello",d,33)
+    # gh(res)
 
 
 t = 1

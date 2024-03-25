@@ -66,13 +66,15 @@ class IOWrapper(IOBase):
 
 sys.stdout = IOWrapper(sys.stdout)
 file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
-if os.path.exists(file_path): #os.path.exists('in.txt'):
+# if os.path.exists(file_path): #os.path.exists('in.txt'):
+if os.path.exists("C://Users//mridu//Python_Code//CPPython//in.txt"): #os.path.exists('in.txt'):
     local_ = True
 if os.path.exists("in.txt"):
     sys.stdin = open("in.txt", "r")
     sys.stdout = open("out.txt", "w")
 
 #input = sys.stdin.buffer.readline
+input = sys.stdin.readline
 #print = sys.stdout.write
 
 def lst():
@@ -93,7 +95,7 @@ def matrixNum(m):
     return [lst() for i in range(m)]
 
 def matrixStr(m):
-    return [list(st()) for i in range(m)]
+    return [st() for i in range(m)]
 
 class DSU:
     def __init__(self, n) -> None:
@@ -130,6 +132,7 @@ class DSU:
 def gh(out,s=' '):
     if isinstance(out, list):
         out = s.join(map(str, out))
+    # print(out)
     ans.append(out)
 
 m = 1e1
@@ -185,11 +188,13 @@ def hh():
     return *n,a
 
 if local_:
-    def cout(*args):
-        print('==========',*args)
+    def de(*args):
+        e = ' '.join(map(str,args))
+        sys.stderr.write(e+'\n')
+        # print('==========',*args)
 
 else:
-    def cout(*args):
+    def de(*args):
         return 135
 
 def solve():
@@ -198,59 +203,63 @@ def solve():
    
     mini = inf
     maxi = -inf
-    st()
+    s = st()
     k,n,m = lst()
     a = lst()
     b = lst()
-    lines = k
-    l,r = 0,0
-    c = []
-    while l<n and r<m:
-        # cout(c,l,r,a[l],b[r])
-        if a[l]==0:
-            lines+=1
-            c.append(0)
-            l+=1
-        elif b[r]==0:
-            lines+=1
-            c.append(0)
-            r+=1
+    t = []
+    i = j = 0
+    f = 1
+    while i<len(a) and j<len(b):
+        if a[i]==0:
+            t.append(a[i])
+            i+=1
+            k+=1
+        elif b[j]==0:
+            t.append(b[j])
+            j+=1
+            k+=1
+        elif k>=a[i]:
+            t.append(a[i])
+            i+=1
+        elif k>=b[j]:
+            t.append(b[j])
+            j+=1
         else:
-            if a[l]<=b[r] and lines>=a[l]:
-                c.append(a[l])
-                l+=1
-            elif b[r]<a[l] and lines>=b[r]:
-                c.append(b[r])
-                r+=1
-            else:
-                gh(-1)
-                return
-    while l<n:
-        if a[l]==0:
-            lines+=1
-            c.append(0)
-            l+=1
+            f = 0
+            break
+    while i<len(a):
+        if a[i]==0:
+            t.append(a[i])
+            i+=1
+            k+=1
+        
+        elif k>=a[i]:
+            t.append(a[i])
+            i+=1
+        
         else:
-            if lines>=a[l]:
-                c.append(a[l])
-                l+=1
-            else:
-                gh(-1);return
-    while r<m:
-        if b[r]==0:
-            lines+=1
-            c.append(0)
-            r+=1
+            f = 0
+            break
+    while j<len(b):
+        if b[j]==0:
+            t.append(b[j])
+            j+=1
+            k+=1
+        
+        elif k>=b[j]:
+            t.append(b[j])
+            j+=1
         else:
-            if lines>=b[r]:
-                c.append(b[r])
-                r+=1
-            else:
-                gh(-1);return
+            f = 0
+            break     
+    if not f:
+        gh(-1)
+    else:
+        gh(t)
     
-    gh(c)
-            
 
+        
     
 
 
@@ -259,9 +268,8 @@ t = 1
 t = integer()
 
 for _ in range(t):
-    cout('testcase:',1+_)
+    de('testcase:',1+_)
     solve()
 
 print("\n".join(map(str, ans)))
 
-#convert to c++

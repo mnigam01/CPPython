@@ -198,12 +198,20 @@ def solve():
    
     mini = inf
     maxi = -inf
-    while True:
-        try:
+    try:
+        
+        while True:
             s = st()
-            print(no.upper())
-        except:
-            break
+            print('NO')
+            # sys.stdout.flush()
+    except:
+        pass
+    # while True:
+    #     try:
+    #         s = st()
+    #         print(no.upper())
+    #     except:
+    #         break
     
 
     sys.stdout.flush()

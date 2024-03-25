@@ -66,7 +66,8 @@ class IOWrapper(IOBase):
 
 sys.stdout = IOWrapper(sys.stdout)
 file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
-if os.path.exists(file_path): #os.path.exists('in.txt'):
+# if os.path.exists(file_path): #os.path.exists('in.txt'):
+if os.path.exists("C://Users//mridu//Python_Code//CPPython//in.txt"): #os.path.exists('in.txt'):
     local_ = True
 if os.path.exists("in.txt"):
     sys.stdin = open("in.txt", "r")
@@ -130,7 +131,8 @@ class DSU:
 def gh(out,s=' '):
     if isinstance(out, list):
         out = s.join(map(str, out))
-    ans.append(out)
+    print(out)
+    # ans.append(out)
 
 m = 1e1
 _prime = [i for i in range(int(m+100))]
@@ -167,7 +169,7 @@ def djisktra(src,d):
 
 yes, no = "Yes", "No"
 
-ans = []
+# ans = []
 
 
 dir = [[0,1],[1,0],[0,-1],[-1,0],[1,-1],[-1,1],[1,1],[-1,-1]]
@@ -185,11 +187,13 @@ def hh():
     return *n,a
 
 if local_:
-    def cout(*args):
-        print('==========',*args)
+    def de(*args):
+        e = ' '.join(map(str,args))
+        sys.stderr.write(e+'\n')
+        # print('==========',*args)
 
 else:
-    def cout(*args):
+    def de(*args):
         return 135
 
 def solve():
@@ -198,18 +202,19 @@ def solve():
    
     mini = inf
     maxi = -inf
-    s = st()
-    cnt = 0
-    p = s[0]
-    for i in s:
-        if i == p:
-            cnt+=1
-            if cnt>=7:
-                gh(yes.upper());return
-        else:
-            cnt  = 1
-        p = i
-    gh(no.upper())
+    n = integer()
+    d = defaultdict(int)
+    for i in range(n):
+        s = st()
+        d[s]+=1
+    ans = None
+    for i,v in d.items():
+        if v>maxi:
+            maxi = v
+            ans = i
+    gh(ans)
+            
+    
 
 
 t = 1
@@ -217,9 +222,8 @@ t = 1
 # t = integer()
 
 for _ in range(t):
-    cout('testcase:',1+_)
+    de('testcase:',1+_)
     solve()
 
-print("\n".join(map(str, ans)))
+# print("\n".join(map(str, ans)))
 
-#convert to c++

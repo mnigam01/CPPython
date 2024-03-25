@@ -298,7 +298,7 @@ def solve():
     cnt[1] = 1
     for i in range(1,n):
         cnt[i+1] = cnt[i] + (1 if a[i-1]!=a[i] else 0)
-    # cout(cnt)
+    
     for i in range(n):
         if i-1>=0 and a[i-1]>a[i]:
             res[i] = 1

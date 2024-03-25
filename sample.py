@@ -170,6 +170,9 @@ for i in obj:
     contestId = problem['contestId']
     index = problem['index']
     name = problem['name']
+    # print(problem)
+    if i["programmingLanguage"]=="GNU C++20 (64)":
+        continue
     if 'rating' in problem:
         rating = problem['rating']
     else:

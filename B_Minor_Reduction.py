@@ -66,13 +66,15 @@ class IOWrapper(IOBase):
 
 sys.stdout = IOWrapper(sys.stdout)
 file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'in.txt')
-if os.path.exists(file_path): #os.path.exists('in.txt'):
+# if os.path.exists(file_path): #os.path.exists('in.txt'):
+if os.path.exists("C://Users//mridu//Python_Code//CPPython//in.txt"): #os.path.exists('in.txt'):
     local_ = True
 if os.path.exists("in.txt"):
     sys.stdin = open("in.txt", "r")
     sys.stdout = open("out.txt", "w")
 
 #input = sys.stdin.buffer.readline
+input = sys.stdin.readline
 #print = sys.stdout.write
 
 def lst():
@@ -93,7 +95,7 @@ def matrixNum(m):
     return [lst() for i in range(m)]
 
 def matrixStr(m):
-    return [list(st()) for i in range(m)]
+    return [st() for i in range(m)]
 
 class DSU:
     def __init__(self, n) -> None:
@@ -130,6 +132,7 @@ class DSU:
 def gh(out,s=' '):
     if isinstance(out, list):
         out = s.join(map(str, out))
+    # print(out)
     ans.append(out)
 
 m = 1e1
@@ -185,52 +188,44 @@ def hh():
     return *n,a
 
 if local_:
-    def cout(*args):
-        print('==========',*args)
+    def de(*args):
+        e = ' '.join(map(str,args))
+        sys.stderr.write(e+'\n')
+        # print('==========',*args)
 
 else:
-    def cout(*args):
+    def de(*args):
         return 135
 
+def maxii(a,b):
+    if len(a)>len(b):
+        return a
+    elif len(a)<len(b):
+        return b
+    return max(a,b)
 def solve():
     # print(str.rjust(20, "O")
     # m = str(m).rjust(2,'0')
    
     mini = inf
     maxi = -inf
-    s = list(st())
+    s = st()
+    if s[-1]=='\n':
+        s = s[:-1]
     n = len(s)
-    f = 0
+    s = list(s)
     for i in range(n-2,-1,-1):
-        if len(str(int(s[i])+int(s[i+1])))==2:
-            s[i],s[i+1] = str(int(s[i])+int(s[i+1]))[0],str(int(s[i])+int(s[i+1]))[1]
-            f = 1
-            break
-    if f:
-        gh(''.join(s));return
-    
-    i  = 0
-    # cout(s)
-    s[i+1] = str(int(s[i])+int(s[i+1]))
-    gh(''.join(s[1:]));return
-
-
-    x = s[:-2]+str(int(s[-1])+int(s[-2]))
-    y  = str(int(s[0])+int(s[1]))+s[2:]
-    if len(x)>len(y):
-        gh(x);return
-    elif len(x)<len(y):
-        gh(y);return
-    for i in range(len(x)):
-        if int(x[i])>int(y[i]):
-            gh(x)
+        x = str(int(s[i])+int(s[i+1]))
+        if len(x)>1:
+            s[i] = x[0]
+            s[i+1] = x[1]
+            gh(''.join(s))
             return
-        elif int(x[i])<int(y[i]):
-            gh(y)
-            return
-        
+    x = str(int(s[0])+int(s[1])) + ''.join(s[i+2:])
     gh(x)
+        
 
+    
     
 
 
@@ -239,9 +234,8 @@ t = 1
 t = integer()
 
 for _ in range(t):
-    # cout('testcase:',1+_)
+    de('testcase:',1+_)
     solve()
 
 print("\n".join(map(str, ans)))
 
-#convert to c++
